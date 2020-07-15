@@ -1,0 +1,82 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: Purchase
+          uri: http://localhost:8081
+          predicates:
+            - Path=/purchases/** 
+        - id: Sales
+          uri: http://localhost:8082
+          predicates:
+            - Path=/sales/** 
+        - id: Customer
+          uri: http://localhost:8083
+          predicates:
+            - Path=/customers/** 
+        - id: Book
+          uri: http://localhost:8084
+          predicates:
+            - Path=/books/** 
+        - id: Delivery
+          uri: http://localhost:8085
+          predicates:
+            - Path=/deliveries/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: Purchase
+          uri: http://Purchase:8080
+          predicates:
+            - Path=/purchases/**
+        - id: Sales
+          uri: http://Sales:8080
+          predicates:
+            - Path=/sales/** ,/saleses/**
+        - id: Customer
+          uri: http://Customer:8080
+          predicates:
+            - Path=/customers/** ,/myPages/**
+        - id: Book
+          uri: http://Book:8080
+          predicates:
+            - Path=/books/** 
+        - id: Delivery
+          uri: http://Delivery:8080
+          predicates:
+            - Path=/deliveries/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
